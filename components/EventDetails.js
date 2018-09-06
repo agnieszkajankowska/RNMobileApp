@@ -28,10 +28,10 @@ class EventDetails extends React.Component {
             <View style={{padding: 10}}>
                 <View>
                 <Text style={styles.details}>Name: {this.props.details.name}</Text>
-                <Text style={styles.details}>Time: {this.props.timeFromTo}</Text>
-                <Text style={styles.details}>Speaker: {this.props.speaker}</Text>
-                <Text style={styles.details}>Location: {this.props.location}</Text>
-                <Text style={styles.details}>Description: {this.props.description}</Text>
+                <Text style={styles.details}>Time: {this.props.details.timeFromTo}</Text>
+                <Text style={styles.details}>Speaker: {this.props.details.speaker}</Text>
+                <Text style={styles.details}>Location: {this.props.details.location}</Text>
+                <Text style={styles.details}>Description: {this.props.details.description}</Text>
                 </View>
                 <View style={styles.viewStyle}>
                     <Text style={styles.header}>Ask a question</Text>
