@@ -1,91 +1,51 @@
 import React from 'react';
-import { FlatList, Platform, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import ListCard from '../components/ListCard';
-
-const data = [
-    {
-        id: '1',
-        name: 'Nyheter i Predator',
-        timeFromTo: '11:00 – 11:45',
-        speaker: 'Anette Trevland og Knut Skofteland',
-        location: 'OSEBERGSALEN',
-        description: 'Gjennomgang av nye funksjoner i Predator Gjennomgang av nye funksjoner i Predator Gjennomgang av nye funksjoner i Predator',
-        isMyEvent: false
-    },
-    {
-        id: '2',
-        name: 'Nyheter i Predator',
-        timeFromTo: '11:00 – 11:45',
-        speaker: 'Anette Trevland og Knut Skofteland',
-        location: 'OSEBERGSALEN',
-        description: 'Gjennomgang av nye funksjoner i Predator',
-        isMyEvent: false
-    },
-    {
-        id: '3',
-        name: 'Nyheter i Predator',
-        timeFromTo: '11:00 – 11:45',
-        speaker: 'Anette Trevland og Knut Skofteland',
-        location: 'OSEBERGSALEN',
-        description: 'Gjennomgang av nye funksjoner i Predator',
-        isMyEvent: false
-    },
-    {
-        id: '4',
-        name: 'Nyheter i Predator',
-        timeFromTo: '11:00 – 11:45',
-        speaker: 'Anette Trevland og Knut Skofteland',
-        location: 'OSEBERGSALEN',
-        description: 'Gjennomgang av nye funksjoner i Predator',
-        isMyEvent: false
-    },
-    {
-        id: '5',
-        name: 'Nyheter i Predator',
-        timeFromTo: '11:00 – 11:45',
-        speaker: 'Anette Trevland og Knut Skofteland',
-        location: 'OSEBERGSALEN',
-        description: 'Gjennomgang av nye funksjoner i Predator',
-        isMyEvent: false
-    },
-    {
-        id: '6',
-        name: 'Nyheter i Predator',
-        timeFromTo: '11:00 – 11:45',
-        speaker: 'Anette Trevland og Knut Skofteland',
-        location: 'OSEBERGSALEN',
-        description: 'Gjennomgang av nye funksjoner i Predator',
-        isMyEvent: false
-    },
-    {
-        id: '7',
-        name: 'Nyheter i Predator',
-        timeFromTo: '11:00 – 11:45',
-        speaker: 'Anette Trevland og Knut Skofteland',
-        location: 'OSEBERGSALEN',
-        description: 'Random stuff',
-        isMyEvent: false
-    }
-];
+import globalState from '../globalState';
 
 export default class EventsListScreen extends React.Component {
+    static navigationOptions = {
+        title: 'Events List',
+    };
+
     state = {
-        data: []
+        data: [],
+        filterForStarred: false,
     }
 
     componentDidMount() {
-        this.setState({ data });
+        fetch(`https://inkassoforummobileapi.azurewebsites.net/api/Event/${globalState}`)
+            .then(response => response.json())
+            .then(response => this.setState({ data: response }));
     }
 
     render() {
+        const data = this._getFilteredData();
+
         return (
             <View style={styles.container}>
+                {!!globalState.userCode ? 
+                <TouchableWithoutFeedback onPress={this.onFilter}>
+                    <View style={styles.filterContainer}>
+                        {this.state.filterForStarred ? <Text style={styles.filter}>Show all events</Text> : <Text style={styles.filter}>Show only my events</Text>}
+                    </View>
+                </TouchableWithoutFeedback> : null}
+                {data.length > 0 ?
                 <FlatList
-                    data={this.state.data}
+                    data={data}
                     keyExtractor={this._keyExtractor}
-                    renderItem={({ item }) => <ListCard {...item} startClickHandler={this.onStarClick} navHandler={this.onNavigation} />} />
+                    renderItem={({ item }) => <ListCard {...item} startClickHandler={this.onStarClick} navHandler={this.onNavigation} />} /> : 
+                <Text style={styles.noResultsText}>{this.state.filterForStarred ? 
+                    'You haven\'t chosen any sessions yet. In order to mark that you\'ll be present on a given sessions, click on the star symbol in the bottom right corner of a card' : 
+                    'Loading sessions...'}</Text>}
             </View>
         );
+    }
+
+    onFilter = () => {
+        this.setState((state) => {
+            return {...state, filterForStarred: !state.filterForStarred};
+        });
     }
 
     onStarClick = async (id) => {
@@ -100,6 +60,10 @@ export default class EventsListScreen extends React.Component {
 
             row.isMyEvent = !row.isMyEvent;
 
+            fetch(`https://inkassoforummobileapi.azurewebsites.net/api/Event/AddToMyEvents/${globalState.userCode}/${parseInt(id)}`, {
+                method: 'POST'
+            });
+            
             break;
         }
 
@@ -121,11 +85,35 @@ export default class EventsListScreen extends React.Component {
     }
 
     _keyExtractor = (item) => item.id;
+
+    _getFilteredData() {
+        if (!this.state.filterForStarred) {
+            return this.state.data;
+        }
+
+        return this.state.data.filter(r => r.isMyEvent);
+    }
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
+    },
+    filterContainer: {
+        flex: 0.2,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    filter: {
+        margin: 10,
+        padding: 10,
+        backgroundColor: '#00816d',
+        borderRadius: 10,
+        color: '#ffffff'
+    },
+    noResultsText: {
+        fontWeight: 'bold',
+        padding: 20
     }
 });
