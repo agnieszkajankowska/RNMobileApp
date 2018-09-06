@@ -2,6 +2,7 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View, TextInput, Button, Image } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
+import globalState from './globalState';
 
 export default class App extends React.Component {
   state = {
@@ -12,8 +13,10 @@ export default class App extends React.Component {
 
   render() {
       const submitLogin = () => {
-          console.log("submit loging");
-          this.setState({...this.state, isUserLogged: true})
+          this.setState({...this.state, isUserLogged: true});
+          globalState.userCode = this.state.userCode;
+          console.log("code", this.state.userCode);
+          console.log("submit logging 2", App.code);
       }
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
@@ -28,7 +31,8 @@ export default class App extends React.Component {
             return (
                 <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                     <Image style={{ marginLeft: 10, height: 100, width: 300 }} source={require('./assets/images/inkassoforum.jpg')} />
-                    <TextInput placeholder="Enter Your Code" style={{height: 60, width: 300}} value={this.state.userCode}/>
+                    <TextInput placeholder="Enter Your Code" style={{height: 60, width: 300}} value={this.state.userCode}
+                               onChangeText={(text) => this.setState({...this.state, userCode: text})}/>
                     <Button title="Login" onPress={submitLogin} color="#00816d" />
                 </View>
             )

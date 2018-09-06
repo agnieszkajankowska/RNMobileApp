@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { Rating } from 'react-native-elements';
+import globalState from '../globalState';
 
 class EventDetails extends React.Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class EventDetails extends React.Component {
         }
 
         const submitRating = () => {
-            console.log('submit rating');
+            console.log('submit rating', globalState.userCode);
         }
 
         const submitQuestion = () => {
