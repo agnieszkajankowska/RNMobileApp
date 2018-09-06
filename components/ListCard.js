@@ -4,25 +4,27 @@ import { Icon } from 'react-native-elements';
 
 const ListCard = (props) => {
     return (
-        <View style={styles.listCard}>
-            <View style={[styles.twoColumns, styles.spacer]}>
-                <Text style={[styles.textBold, styles.titleContents]}>{props.name}</Text>
-                <Text style={styles.titleContents}>{props.timeFromTo}</Text>
+        <TouchableWithoutFeedback onPress={() => props.navHandler(props.id)}>
+            <View style={styles.listCard}>
+                <View style={[styles.twoColumns, styles.spacer]}>
+                    <Text style={[styles.textBold, styles.titleContents]}>{props.name}</Text>
+                    <Text style={styles.titleContents}>{props.timeFromTo}</Text>
+                </View>
+                <Text style={styles.spacer}>{props.speaker}</Text>
+                <View style={[styles.spacer, styles.location]}>
+                    <Text style={styles.textBold}>{props.location}</Text>
+                    <Image style={{ marginLeft: 10, height: 15, width: 15 }} source={require('../assets/images/location.png')} />
+                </View> 
+                <View style={styles.twoColumns}>
+                    <Text style={[styles.spacer, styles.shortDescription]}
+                        ellipsizeMode='tail' 
+                        numberOfLines={2}>{props.description}</Text>
+                    <TouchableWithoutFeedback onPress={() => props.startClickHandler(props.id)}>
+                        {props.isMyEvent ? <Icon color='#00816d' name='star' /> : <Icon color='#00816d' name='star-border' />}
+                    </TouchableWithoutFeedback>
+                </View>
             </View>
-            <Text style={styles.spacer}>{props.speaker}</Text>
-            <View style={[styles.spacer, styles.location]}>
-                <Text style={styles.textBold}>{props.location}</Text>
-                <Image style={{ marginLeft: 10, height: 15, width: 15 }} source={require('../assets/images/location.png')} />
-            </View> 
-            <View style={styles.twoColumns}>
-                <Text style={[styles.spacer, styles.shortDescription]}
-                    ellipsizeMode='tail' 
-                    numberOfLines={2}>{props.description}</Text>
-                <TouchableWithoutFeedback onPress={() => props.startClickHandler(props.id)}>
-                    {props.isMyEvent ? <Icon color='#00816d' name='star' /> : <Icon color='#00816d' name='star-border' />}
-                </TouchableWithoutFeedback>
-            </View>
-        </View>
+        </TouchableWithoutFeedback>
     );
 };
 
