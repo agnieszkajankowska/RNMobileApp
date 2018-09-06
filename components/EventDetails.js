@@ -33,24 +33,31 @@ class EventDetails extends React.Component {
                 <Text style={styles.details}>Location: {this.props.details.location}</Text>
                 <Text style={styles.details}>Description: {this.props.details.description}</Text>
                 </View>
-                <View style={styles.viewStyle}>
-                    <Text style={styles.header}>Ask a question</Text>
-                    <TextInput style={{height: 40}} onChangeText={(text) => this.setState({text})}/>
-                    <Button title="Submit" onPress={submitQuestion} color='#00816d'/>
-                </View>
-                <View style={styles.viewStyle}>
-                    <Text style={styles.header}>Rate session</Text>
-                    <Rating
-                        showRating
-                        type="star"
-                        fractions={0}
-                        startingValue={4}
-                        imageSize={40}
-                        onFinishRating={this.ratingCompleted}
-                        style={{ paddingVertical: 10 }}
-                    />
-                    <Button title="Submit" onPress={submitRating} color="#00816d"/>
-                </View>
+                {
+                    (globalState.isAuthorized && this.props.details.isMyEvent && this.props.details.isRunning) ?
+                        <View style={styles.viewStyle}>
+                            <Text style={styles.header}>Ask a question</Text>
+                            <TextInput style={{height: 40}} onChangeText={(text) => this.setState({text})}/>
+                            <Button title="Submit" onPress={submitQuestion} color='#00816d'/>
+                        </View> : ''
+                }
+                {
+                    (globalState.isAuthorized && this.props.details.isMyEvent && this.props.details.isRunning) ?
+                        <View style={styles.viewStyle}>
+                            <Text style={styles.header}>Rate session</Text>
+                            <Rating
+                                showRating
+                                type="star"
+                                fractions={0}
+                                startingValue={4}
+                                imageSize={40}
+                                onFinishRating={this.ratingCompleted}
+                                style={{ paddingVertical: 10 }}
+                            />
+                            <Button title="Submit" onPress={submitRating} color="#00816d"/>
+                        </View> : ''
+                }
+
             </View>
         )
     }

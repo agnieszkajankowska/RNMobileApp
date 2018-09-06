@@ -15,24 +15,25 @@ export default class App extends React.Component {
   render() {
       const submitLogin = () => {
           fetch('https://inkassoforummobileapi.azurewebsites.net//api/User/LogUser', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                  code: this.state.userCode
-              })
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                      code: this.state.userCode
+                  })
               }
-              ).then((response) => response.json().then((data) => {
-              console.log('data', data);
-              this.setState({...this.state, isUserLogged: true});
-              globalState.userCode = this.state.userCode;
-              if(data.data.isAuthorized) {
-              globalState.isAuthorized = this.state.isAuthorized;
+          ).then((response) => response.json().then((data) => {
+                  console.log('data', data);
+                  this.setState({...this.state, isUserLogged: true});
+                  globalState.userCode = this.state.userCode;
+                  if (data.data.isAuthorized) {
+                      globalState.isAuthorized = this.state.isAuthorized;
+                  }
+                  console.log("code", this.state.userCode);
               }
-              console.log("code", this.state.userCode);
-          }
-  ))
+          ))
+      }
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -93,5 +94,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
+  }
 });
