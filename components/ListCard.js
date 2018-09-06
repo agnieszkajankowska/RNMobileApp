@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Icon } from 'react-native-elements';
+import globalState from '../globalState';
 
 const ListCard = (props) => {
     return (
@@ -19,9 +20,10 @@ const ListCard = (props) => {
                     <Text style={[styles.spacer, styles.shortDescription]}
                         ellipsizeMode='tail' 
                         numberOfLines={2}>{props.description}</Text>
+                    {!!globalState.userCode ? 
                     <TouchableWithoutFeedback onPress={() => props.startClickHandler(props.id)}>
                         {props.isMyEvent ? <Icon color='#00816d' name='star' /> : <Icon color='#00816d' name='star-border' />}
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> : null}
                 </View>
             </View>
         </TouchableWithoutFeedback>

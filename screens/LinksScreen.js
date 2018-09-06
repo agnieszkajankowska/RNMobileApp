@@ -2,7 +2,6 @@ import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import EventDetails from "../components/EventDetails";
 
-
 export default class LinksScreen extends React.Component {
   static navigationOptions = {
     title: 'Event Details',
