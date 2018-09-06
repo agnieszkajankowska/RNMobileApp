@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 const ListCard = (props) => {
@@ -7,9 +7,9 @@ const ListCard = (props) => {
         <View style={styles.listCard}>
             <View style={[styles.twoColumns, styles.spacer]}>
                 <Text style={[styles.textBold, styles.titleContents]}>{props.name}</Text>
-                <Text style={styles.titleContents}>{props.time}</Text>
+                <Text style={styles.titleContents}>{props.timeFromTo}</Text>
             </View>
-            <Text style={styles.spacer}>{props.prelegent}</Text>
+            <Text style={styles.spacer}>{props.speaker}</Text>
             <View style={[styles.spacer, styles.location]}>
                 <Text style={styles.textBold}>{props.location}</Text>
                 <Image style={{ marginLeft: 10, height: 15, width: 15 }} source={require('../assets/images/location.png')} />
@@ -17,8 +17,10 @@ const ListCard = (props) => {
             <View style={styles.twoColumns}>
                 <Text style={[styles.spacer, styles.shortDescription]}
                     ellipsizeMode='tail' 
-                    numberOfLines={2}>{props.shortDescription}</Text>
-                {props.isAttending ? <Icon color='#00816d' name='star' /> : <Icon color='#00816d' name='star-border' />}
+                    numberOfLines={2}>{props.description}</Text>
+                <TouchableWithoutFeedback onPress={() => props.startClickHandler(props.id)}>
+                    {props.isMyEvent ? <Icon color='#00816d' name='star' /> : <Icon color='#00816d' name='star-border' />}
+                </TouchableWithoutFeedback>
             </View>
         </View>
     );
