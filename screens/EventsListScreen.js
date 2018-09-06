@@ -107,7 +107,17 @@ export default class EventsListScreen extends React.Component {
     }
 
     onNavigation = (id) => {
-        //const { navigate } = this.props.navigation;
+        const { navigate } = this.props.navigation;
+
+        for (let row of this.state.data) {
+            if (row.id !== id) {
+                continue;
+            }
+
+            navigate('Links', row);
+
+            return;
+        }
     }
 
     _keyExtractor = (item) => item.id;
