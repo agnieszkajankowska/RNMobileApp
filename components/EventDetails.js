@@ -17,6 +17,7 @@ class EventDetails extends React.Component {
 
     render() {
         const submitRating = () => {
+
             console.log('submit rating', globalState.userCode);
         }
 
@@ -39,7 +40,7 @@ class EventDetails extends React.Component {
                             <Text style={styles.header}>Ask a question</Text>
                             <TextInput style={{height: 40}} onChangeText={(text) => this.setState({text})}/>
                             <Button title="Submit" onPress={submitQuestion} color='#00816d'/>
-                        </View> : ''
+                        </View> : null
                 }
                 {
                     (globalState.isAuthorized && this.props.details.isMyEvent && this.props.details.isRunning) ?
@@ -55,7 +56,7 @@ class EventDetails extends React.Component {
                                 style={{ paddingVertical: 10 }}
                             />
                             <Button title="Submit" onPress={submitRating} color="#00816d"/>
-                        </View> : ''
+                        </View> : null
                 }
 
             </View>

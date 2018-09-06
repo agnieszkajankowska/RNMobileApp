@@ -28,7 +28,7 @@ export default class App extends React.Component {
                   this.setState({...this.state, isUserLogged: true});
                   globalState.userCode = this.state.userCode;
                   if (data.data.isAuthorized) {
-                      globalState.isAuthorized = this.state.isAuthorized;
+                      globalState.isAuthorized = true;
                   }
                   console.log("code", this.state.userCode);
               }
