@@ -16,7 +16,7 @@ export default class EventsListScreen extends React.Component {
     componentDidMount() {
         fetch(`https://inkassoforummobileapi.azurewebsites.net/api/Event/${globalState}`)
             .then(response => response.json())
-            .then(response => this.setState({ data: response }));
+            .then(response => this.setState({ data: response.data }));
     }
 
     render() {
