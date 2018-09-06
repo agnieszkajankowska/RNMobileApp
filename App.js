@@ -1,14 +1,20 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Platform, StatusBar, StyleSheet, View, TextInput, Button } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
+      isUserLogged: true,
+      userCode: ''
   };
 
   render() {
+      const submitLogin = () => {
+          console.log("submit loging");
+          this.setState({...this.state, isUserLogged: true})
+      }
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
@@ -18,12 +24,21 @@ export default class App extends React.Component {
         />
       );
     } else {
-      return (
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
-        </View>
-      );
+        if(!this.state.isUserLogged) {
+            return (
+                <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                    <TextInput placeholder="Enter Your Code" style={{height: 60, width: 200}} value={this.state.userCode}/>
+                    <Button title="Login" onPress={submitLogin} color="#00816d" />
+                </View>
+            )
+        } else {
+            return (
+                <View style={styles.container}>
+                    {Platform.OS === 'ios' && <StatusBar barStyle="default"/>}
+                    <AppNavigator/>
+                </View>
+            );
+        }
     }
   }
 
