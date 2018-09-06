@@ -9,9 +9,10 @@ export default class LinksScreen extends React.Component {
   };
 
   render() {
+      console.log('links props', this.props)
     return (
       <ScrollView style={styles.container}>
-          <EventDetails/>
+          <EventDetails details={this.props.navigation.state.params}/>
       </ScrollView>
     );
   }

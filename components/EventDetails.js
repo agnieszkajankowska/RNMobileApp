@@ -16,16 +16,6 @@ class EventDetails extends React.Component {
     }
 
     render() {
-        const eventDetails = {
-            name: "Nyheter i Predator",
-            timeFromTo: "10.00 - 11.00",
-            speaker: "Andersh",
-            location: "Room 12",
-            description: "",
-            isMyEvent: true,
-            isRunning: true
-        }
-
         const submitRating = () => {
             console.log('submit rating', globalState.userCode);
         }
@@ -37,11 +27,11 @@ class EventDetails extends React.Component {
         return (
             <View style={{padding: 10}}>
                 <View>
-                <Text style={styles.details}>Name: {eventDetails.name}</Text>
-                <Text style={styles.details}>Time: {eventDetails.timeFromTo}</Text>
-                <Text style={styles.details}>Speaker: {eventDetails.speaker}</Text>
-                <Text style={styles.details}>Location: {eventDetails.location}</Text>
-                <Text style={styles.details}>Description: {eventDetails.description}</Text>
+                <Text style={styles.details}>Name: {this.props.details.name}</Text>
+                <Text style={styles.details}>Time: {this.props.timeFromTo}</Text>
+                <Text style={styles.details}>Speaker: {this.props.speaker}</Text>
+                <Text style={styles.details}>Location: {this.props.location}</Text>
+                <Text style={styles.details}>Description: {this.props.description}</Text>
                 </View>
                 <View style={styles.viewStyle}>
                     <Text style={styles.header}>Ask a question</Text>
