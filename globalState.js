@@ -1,5 +1,6 @@
 const globalState = {
-    userCode: ''
+    userCode: '',
+    isAuthorized: false
 };
 
 export default globalState;

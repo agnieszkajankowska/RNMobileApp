@@ -8,16 +8,31 @@ export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
       isUserLogged: false,
-      userCode: ''
+      userCode: '',
   };
+
 
   render() {
       const submitLogin = () => {
-          this.setState({...this.state, isUserLogged: true});
-          globalState.userCode = this.state.userCode;
-          console.log("code", this.state.userCode);
-          console.log("submit logging 2", App.code);
-      }
+          fetch('https://inkassoforummobileapi.azurewebsites.net//api/User/LogUser', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  code: this.state.userCode
+              })
+              }
+              ).then((response) => response.json().then((data) => {
+              console.log('data', data);
+              this.setState({...this.state, isUserLogged: true});
+              globalState.userCode = this.state.userCode;
+              if(data.data.isAuthorized) {
+              globalState.isAuthorized = this.state.isAuthorized;
+              }
+              console.log("code", this.state.userCode);
+          }
+  ))
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
