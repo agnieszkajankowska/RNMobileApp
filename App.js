@@ -24,13 +24,13 @@ export default class App extends React.Component {
                   })
               }
           ).then((response) => response.json().then((data) => {
-                  console.log('data', data);
+                  console.log('data login', data);
                   this.setState({...this.state, isUserLogged: true});
                   globalState.userCode = this.state.userCode;
                   if (data.data.isAuthorized) {
                       globalState.isAuthorized = true;
                   }
-                  console.log("code", this.state.userCode);
+                  console.log("code", this.state.userCode, globalState.userCode );
               }
           ))
       }
@@ -48,7 +48,10 @@ export default class App extends React.Component {
                 <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                     <Image style={{ marginLeft: 10, height: 100, width: 300 }} source={require('./assets/images/inkassoforum.jpg')} />
                     <TextInput placeholder="Enter Your Code" style={{height: 60, width: 300}} value={this.state.userCode}
-                               onChangeText={(text) => this.setState({...this.state, userCode: text})}/>
+                               onChangeText={(text) => {
+                                   this.setState({...this.state, userCode: text});
+                                   globalState.userCode = text;
+                               }}/>
                     <Button title="Login" onPress={submitLogin} color="#00816d" />
                 </View>
             )

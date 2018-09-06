@@ -7,24 +7,60 @@ class EventDetails extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            text: ''
+            text: '',
+            rating: 0,
+            isQuestionSent: false,
+            isRatingSent: false
         }
     }
 
     ratingCompleted(rating) {
+        this.setState({...this.state, rating: rating})
         console.log("Rating is: " + rating)
     }
 
     render() {
         const submitRating = () => {
-
+            fetch('https://inkassoforummobileapi.azurewebsites.net/api/Event/SubmitQuestion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userCode: globalState.userCode,
+                    eventId: this.props.details.id,
+                    question: this.state.text
+                })
+            }).then(
+                ((response) => response.json().then((data) => {
+                        this.setState({...this.state, question: ''})
+                    }
+                ))
+            )
             console.log('submit rating', globalState.userCode);
         }
 
         const submitQuestion = () => {
+            fetch('https://inkassoforummobileapi.azurewebsites.net/api/Event/RateEvent', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userCode: globalState.userCode,
+                    eventId: this.props.details.id,
+                    rating: this.state.rating,
+                    comment: ""
+                })
+            }).then(
+                ((response) => response.json().then((data) => {
+                    console.log('data', data);
+                    }
+                ))
+            )
             console.log('submit question');
         }
-
+        console.log('globalState.isAuthorized', globalState.isAuthorized, 'this.props.details.isMyEvent', this.props.details.isMyEvent, 'this.props.details.isRunning', this.props.details.isRunning )
         return (
             <View style={{padding: 10}}>
                 <View>
@@ -40,6 +76,7 @@ class EventDetails extends React.Component {
                             <Text style={styles.header}>Ask a question</Text>
                             <TextInput style={{height: 40}} onChangeText={(text) => this.setState({text})}/>
                             <Button title="Submit" onPress={submitQuestion} color='#00816d'/>
+                            {this.state.isQuestionSent ? <Text>Your question has been sent.</Text> : null}
                         </View> : null
                 }
                 {
@@ -56,6 +93,7 @@ class EventDetails extends React.Component {
                                 style={{ paddingVertical: 10 }}
                             />
                             <Button title="Submit" onPress={submitRating} color="#00816d"/>
+                            {this.state.isRatingSent ? <Text>Your rating has been sent</Text> : null}
                         </View> : null
                 }
 

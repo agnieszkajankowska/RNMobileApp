@@ -14,9 +14,10 @@ export default class EventsListScreen extends React.Component {
     }
 
     componentDidMount() {
-        fetch(`https://inkassoforummobileapi.azurewebsites.net/api/Event/${globalState}`)
+        fetch(`https://inkassoforummobileapi.azurewebsites.net/api/Event/${globalState.userCode}`)
             .then(response => response.json())
-            .then(response => this.setState({ data: response.data }));
+            .then(response => {console.log("response", response.data)
+                this.setState({ data: response.data })});
     }
 
     render() {
@@ -24,7 +25,7 @@ export default class EventsListScreen extends React.Component {
 
         return (
             <View style={styles.container}>
-                {!!globalState.userCode ? 
+                {!!globalState.userCode ?
                 <TouchableWithoutFeedback onPress={this.onFilter}>
                     <View style={styles.filterContainer}>
                         {this.state.filterForStarred ? <Text style={styles.filter}>Show all events</Text> : <Text style={styles.filter}>Show only my events</Text>}
@@ -34,9 +35,9 @@ export default class EventsListScreen extends React.Component {
                 <FlatList
                     data={data}
                     keyExtractor={this._keyExtractor}
-                    renderItem={({ item }) => <ListCard {...item} startClickHandler={this.onStarClick} navHandler={this.onNavigation} />} /> : 
-                <Text style={styles.noResultsText}>{this.state.filterForStarred ? 
-                    'You haven\'t chosen any sessions yet. In order to mark that you\'ll be present on a given sessions, click on the star symbol in the bottom right corner of a card' : 
+                    renderItem={({ item }) => <ListCard {...item} startClickHandler={this.onStarClick} navHandler={this.onNavigation} />} /> :
+                <Text style={styles.noResultsText}>{this.state.filterForStarred ?
+                    'You haven\'t chosen any sessions yet. In order to mark that you\'ll be present on a given sessions, click on the star symbol in the bottom right corner of a card' :
                     'Loading sessions...'}</Text>}
             </View>
         );
@@ -63,7 +64,7 @@ export default class EventsListScreen extends React.Component {
             fetch(`https://inkassoforummobileapi.azurewebsites.net/api/Event/AddToMyEvents/${globalState.userCode}/${parseInt(id)}`, {
                 method: 'POST'
             });
-            
+
             break;
         }
 
