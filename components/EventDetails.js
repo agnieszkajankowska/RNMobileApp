@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-
+import { Rating } from 'react-native-elements';
 
 class EventDetails extends React.Component {
     constructor(props) {
@@ -9,6 +9,11 @@ class EventDetails extends React.Component {
             text: ''
         }
     }
+
+    ratingCompleted(rating) {
+        console.log("Rating is: " + rating)
+    }
+
     render() {
         const eventDetails = {
             name: "Nyheter i Predator",
@@ -18,6 +23,15 @@ class EventDetails extends React.Component {
             description: "",
             isMyEvent: true
         }
+
+        const submitRating = () => {
+            console.log('submit rating');
+        }
+
+        const submitQuestion = () => {
+            console.log('submit question');
+        }
+
         return (
             <View>
                 <Text>Name:{eventDetails.name}</Text>
@@ -27,8 +41,18 @@ class EventDetails extends React.Component {
                 <Text>Description: {eventDetails.description}</Text>
                 <Text>Ask a question</Text>
                 <TextInput style={{height: 40}} onChangeText={(text) => this.setState({text})}/>
+                <Button title="Submit" onPress={submitQuestion}/>
                 <Text>Rate session</Text>
-                <Button title="Submit"/>
+                <Rating
+                    showRating
+                    type="star"
+                    fractions={0}
+                    startingValue={3.6}
+                    imageSize={40}
+                    onFinishRating={this.ratingCompleted}
+                    style={{ paddingVertical: 10 }}
+                />
+                <Button title="Submit" onPress={submitRating}/>
             </View>
         )
     }
